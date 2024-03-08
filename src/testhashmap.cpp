@@ -75,9 +75,49 @@ void test2()
 	cout << "test 2 passed" << endl;
 }
 
+void test3()
+{
+	HashMap<string> test(10);
+
+	test.insert("a", "A");
+	string* ptr = test.find("a");
+	test.insert("b", "B");
+	test.insert("c", "C");
+	test.insert("d", "D");
+	test.insert("e", "E");
+	test.insert("f", "F");
+	test.insert("g", "G");
+	test.insert("h", "H");
+	test.insert("i", "I");
+	test.insert("j", "J");
+	test.insert("k", "K");
+	test.insert("l", "L");
+	test.insert("m", "M");
+	test.insert("n", "N");
+	test.insert("o", "O");
+	test.insert("p", "P");
+	test.insert("q", "Q");
+	test.insert("r", "R");
+	test.insert("s", "S");
+	test.insert("t", "T");
+	test.insert("u", "U");
+	test.insert("v", "V");
+	test.insert("w", "W");
+	test.insert("x", "X");
+	test.insert("y", "Y");
+	test.insert("z", "Z");
+	assert(test.size() == 26 && test["b"] == "B");
+	assert(*ptr == "A");
+	*ptr = "Hello";
+	assert(test["a"] == "Hello");
+
+	cout << "test 3 passed" << endl;
+}
+
 int main()
 {
 	test1();
 	test2();
+	test3();
 	cout << "all tests passed" << endl;
 }
