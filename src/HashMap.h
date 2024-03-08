@@ -34,13 +34,15 @@ private:
 	HashMap(const HashMap& other) {}
 	HashMap& operator=(const HashMap& other) {}
 
-	int hash(const std::string& key);
-
 	struct Node {
 		std::string key;
 		T value;
 		Node* next;
 	};
+
+	int hash(const std::string& key, int mod = -1);
+	void grow();
+	void insertNodeAt(Node** map, Node* node, int index);
 
 	int m_size;
 	int m_used;
@@ -77,12 +79,62 @@ HashMap<T>::~HashMap()
 }
 
 template <typename T>
+void HashMap<T>::grow()
+{
+	// create a new array of Node pointers with
+	// double the size and initialize to nullptr
+	int new_size = m_size * 2;
+	Node** new_map = new Node*[new_size];
+	for (int i = 0; i < new_size; i++)
+		new_map[i] = nullptr;
+
+	// insert Node pointers from current array to
+	// correct location in new array
+	for (int i = 0; i < m_size; i++) {
+		Node* curr = m_map[i];
+		Node* next;
+		while (curr != nullptr) {
+			next = curr->next;
+			int j = hash(curr->key, new_size);
+			insertNodeAt(new_map, curr, j);
+			curr = next;
+		}
+	}
+
+	delete [] m_map;
+	m_map = new_map;
+	m_size = new_size;
+}
+
+template <typename T>
+void HashMap<T>::insertNodeAt(Node** map, Node* node, int index)
+{
+	node->next = nullptr;
+	Node* curr = map[index];
+
+	if (curr == nullptr) {
+		map[index] = node;
+		return;
+	}
+
+	Node* prev;
+	while (curr != nullptr) {
+		prev = curr;
+		curr = curr->next;
+	}
+
+	prev->next = node;
+}
+
+
+template <typename T>
 void HashMap<T>::insert(const std::string& key, const T& value)
 {
+	if ( ((double)m_used+1) / m_size > m_max_load )
+		grow();
+
 	int i = hash(key);
 	Node* curr = m_map[i];
-
-	// TODO check max load
 
 	if (curr == nullptr) {
 		m_map[i] = new Node{key, value, nullptr};
@@ -135,9 +187,9 @@ T& HashMap<T>::operator[](const std::string& key)
 }
 
 template <typename T>
-int HashMap<T>::hash(const std::string& key)
+int HashMap<T>::hash(const std::string& key, int mod)
 {
-	return std::hash<std::string>()(key) % m_size;
+	return std::hash<std::string>()(key) % (mod == -1 ? m_size : mod);
 }
 
 #endif // HashMap_h

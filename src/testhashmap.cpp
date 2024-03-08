@@ -48,8 +48,36 @@ void test1()
 	cout << "test 1 passed" << endl;
 }
 
+void test2()
+{
+	HashMap<string> test(0.2);
+
+	test.insert("a", "A");
+	string* ptr = test.find("a");
+	test.insert("b", "B");
+	test.insert("c", "C");
+	test.insert("d", "D");
+	test.insert("e", "E");
+	test.insert("f", "F");
+	test.insert("g", "G");
+	test.insert("h", "H");
+	test.insert("i", "I");
+	test.insert("j", "J");
+	test.insert("k", "K");
+	test.insert("l", "L");
+	test.insert("m", "M");
+	assert(test.size() == 13 && test["b"] == "B");
+	// test pointer validity after growing hash map
+	assert(*ptr == "A");
+	*ptr = "Hello";
+	assert(test["a"] == "Hello");
+
+	cout << "test 2 passed" << endl;
+}
+
 int main()
 {
 	test1();
+	test2();
 	cout << "all tests passed" << endl;
 }
