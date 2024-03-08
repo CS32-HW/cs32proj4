@@ -121,18 +121,18 @@ T* HashMap<T>::find(const std::string& key)
 	return nullptr;
 }
 
-//template <typename T>
-//T& HashMap<T>::operator[](const std::string& key)
-//{
-//	T* val_ptr = find(key);
-//	if (val_ptr != nullptr)
-//		return *val_ptr;
-//
-//	T val;
-//	insert(key, val);
-//	val_ptr = find(key);
-//	return *val_ptr;
-//}
+template <typename T>
+T& HashMap<T>::operator[](const std::string& key)
+{
+	T* val_ptr = find(key);
+	if (val_ptr != nullptr)
+		return *val_ptr;
+
+	T val;
+	insert(key, val);
+	val_ptr = find(key);
+	return *val_ptr;
+}
 
 template <typename T>
 int HashMap<T>::hash(const std::string& key)
