@@ -18,16 +18,23 @@ public:
 	// associated with that key is replaced by the second parameter (value). 
 	// Thus, the hashmap must contain no duplicate keys. 
 	void insert(const std::string& key, const T& value); 
-	// If no association exists with the given key, return nullptr; otherwise, 
-	// return a pointer to the value associated with that key. This pointer can be 
-	// used to examine that value or modify it directly within the map. 
-	T* find(const std::string& key);
 	// Defines the bracket operator for HashMap, so you can use your map like this:
 	// your_map["david"] = 2.99;
 	// If the key does not exist in the hashmap, this will create a new entry in 
 	// the hashmap and map it to the default value of type T. Then it will return a
 	// reference to the newly created value in the map.
 	T& operator[](const std::string& key);
+	// If no association exists with the given key, return nullptr; otherwise, 
+	// return a pointer to the value associated with that key. This pointer can be 
+	// used to examine that value within the map.
+	const T* find(const std::string& key) const;
+	// If no association exists with the given key, return nullptr; otherwise, 
+	// return a pointer to the value associated with that key. This pointer can be 
+	// used to examine that value or modify it directly within the map. 
+	T* find(const std::string& key) {
+		const auto& hm = *this;
+		return const_cast<T*>(hm.find(key));
+	}
 
 private:
 	// prevent copying and assigning HashMaps
@@ -40,7 +47,7 @@ private:
 		Node* next;
 	};
 
-	int hash(const std::string& key, int mod = -1);
+	int hash(const std::string& key, int mod = -1) const;
 	void grow();
 	void insertNodeAt(Node** map, Node* node, int index);
 
@@ -157,7 +164,7 @@ void HashMap<T>::insert(const std::string& key, const T& value)
 }
 
 template <typename T>
-T* HashMap<T>::find(const std::string& key)
+const T* HashMap<T>::find(const std::string& key) const
 {
 	Node* curr = m_map[hash(key)];
 
@@ -180,14 +187,14 @@ T& HashMap<T>::operator[](const std::string& key)
 	if (val_ptr != nullptr)
 		return *val_ptr;
 
-	T val;
+	T val = T();
 	insert(key, val);
 	val_ptr = find(key);
 	return *val_ptr;
 }
 
 template <typename T>
-int HashMap<T>::hash(const std::string& key, int mod)
+int HashMap<T>::hash(const std::string& key, int mod) const
 {
 	return std::hash<std::string>()(key) % (mod == -1 ? m_size : mod);
 }
