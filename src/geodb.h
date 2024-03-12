@@ -5,7 +5,6 @@
 #include "geopoint.h"
 #include "HashMap.h"
 #include <fstream>
-#include <list>
 #include <vector>
 #include <string>
 
@@ -25,7 +24,7 @@ private:
 	std::vector<GeoPoint*> geo_points;
 
 	HashMap<GeoPoint*> poi_map;
-	HashMap<std::list<GeoPoint*>> vertex_map;
+	HashMap<std::vector<GeoPoint*>> vertex_map;
 	HashMap<std::string> street_map;
 };
 

@@ -2,7 +2,6 @@
 #include "geotools.h"
 #include <iostream>
 #include <fstream>
-#include <list>
 #include <vector>
 #include <string>
 
@@ -54,7 +53,7 @@ int GeoDatabase::processRecord(std::ifstream& file)
 	int start = 0, end = 0;
 	for (int i = 0; i < 3; i++) {
 		end = geoPoints.find(" ", start);
-		coor[i] = geoPoints.substr(start, end);
+		coor[i] = geoPoints.substr(start, end-start);
 		start = end+1;
 	}
 	coor[3] = geoPoints.substr(start);
@@ -69,11 +68,9 @@ int GeoDatabase::processRecord(std::ifstream& file)
 	geo_points.push_back(mid);
 
 	vertex_map[pt1->to_string()].push_back(pt2);
-	vertex_map[pt1->to_string()].push_back(mid);
 	vertex_map[mid->to_string()].push_back(pt1);
 	vertex_map[mid->to_string()].push_back(pt2);
 	vertex_map[pt2->to_string()].push_back(pt1);
-	vertex_map[pt2->to_string()].push_back(mid);
 
 	street_map[pt1->to_string() + ","  + pt2->to_string()] = streetName;
 	street_map[pt1->to_string() + ","  + mid->to_string()] = streetName;
@@ -126,8 +123,25 @@ bool GeoDatabase::get_poi_location(const std::string& poi, GeoPoint& point) cons
 
 std::vector<GeoPoint> GeoDatabase::get_connected_points(const GeoPoint& pt) const
 {
+	vector<GeoPoint*> const* geo_ptr= vertex_map.find(pt.to_string());
+	vector<GeoPoint> geo;
+
+	if (geo_ptr == nullptr)
+		return geo;
+
+	vector<GeoPoint*> geo_list = *geo_ptr;
+
+	for (int i = 0; i < geo_list.size(); i++)
+		geo.push_back(*geo_list[i]);
+
+	return geo;
 }
 
 std::string GeoDatabase::get_street_name(const GeoPoint& pt1, const GeoPoint& pt2) const
 {
+	string const* ptr = street_map.find(pt1.to_string() + "," + pt2.to_string());
+	if (ptr == nullptr)
+		return "";
+
+	return *ptr;
 }
