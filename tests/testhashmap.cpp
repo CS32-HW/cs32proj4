@@ -1,4 +1,4 @@
-#include "HashMap.h"
+#include "../src/HashMap.h"
 #include <iostream>
 #include <cassert>
 
@@ -119,5 +119,5 @@ int main()
 	test1();
 	test2();
 	test3();
-	cout << "all tests passed" << endl;
+	cout << "testhashmap: all tests passed" << endl;
 }

@@ -1,14 +1,14 @@
-#include "geodb.h"
-#include "geopoint.h"
+#include "../src/geodb.h"
+#include "../src/geopoint.h"
 #include <cassert>
 #include <iostream>
 
 using namespace std;
 
+GeoDatabase g;
+
 void test1()
 {
-	GeoDatabase g;
-	g.load("../mapdata.txt");
 	GeoPoint p;
 	assert(g.get_poi_location("Diddy Riese", p) == true);
 	assert(p.to_string() == "34.0630614,-118.4468781");
@@ -23,9 +23,6 @@ void test1()
 
 void test2()
 {
-	GeoDatabase g;
-	g.load("../mapdata.txt");
-
 	vector<GeoPoint> pts1 = g.get_connected_points(GeoPoint("34.0736122", "-118.4927669"));
 	string expected1[3] = {
 		"34.0732851,-118.4931016",
@@ -54,9 +51,6 @@ void test2()
 
 void test3()
 {
-	GeoDatabase g;
-	g.load("../mapdata.txt");
-
 	GeoPoint pt1("34.0732851", "-118.4931016");
 	GeoPoint pt2("34.0736122", "-118.4927669");
 	string res1 = g.get_street_name(pt1, pt2);
@@ -78,7 +72,9 @@ void test3()
 
 int main()
 {
+	g.load("../mapdata.txt");
 	test1();
 	test2();
 	test3();
+	cout << "testgeodb: all tests passed" << endl;
 }
