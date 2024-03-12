@@ -46,6 +46,9 @@ void test2()
 	for (int i = 0; i < pts3.size(); i++)
 		assert(pts3[i].to_string() == expected3[i]);
 
+	vector<GeoPoint> pts4 = g.get_connected_points(GeoPoint("34.0345768", "-118.4467216"));
+	assert(pts4.size() == 0);
+
 	cout << "test2 passed" << endl;
 }
 
@@ -66,6 +69,8 @@ void test3()
 	GeoPoint pt6("34.0600768", "-118.4467216");
 	assert(g.get_street_name(pt5, pt6) == "Kinross Avenue");
 	assert(g.get_street_name(pt6, pt5) == "Kinross Avenue");
+
+	assert(g.get_street_name(pt1, pt6) == "");
 
 	cout << "test3 passed" << endl;
 }
