@@ -44,11 +44,23 @@ void test3()
 	cout << "test3 passed" << endl;
 }
 
+void test4()
+{
+	Router router(g);
+	vector<GeoPoint> test = router.route(GeoPoint("34.0569695", "-118.4646643"), GeoPoint("34.0569695", "-118.4646643"));
+
+	assert(test.size() == 1);
+	assert(test[0].to_string() == "34.0569695,-118.4646643");
+
+	cout << "test4 passed" << endl;
+}
+
 int main()
 {
 	g.load("../mapdata.txt");
 	test1();
 	test2();
 	test3();
+	test4();
 	cout << "testrouter: all tests passed" << endl;
 }
