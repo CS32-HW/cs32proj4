@@ -1,0 +1,27 @@
+GeoDatabase: load()
+A vector is used to keep track of all the GeoPoints. HashMaps are used to index
+GeoPoints. For the average case, inserting into these data structures is O(1)
+Reading all the GeoPoint data from a file is an O(N) operation, where N is
+the number of GeoPoints. Therefore, the load function is O(N).
+
+GeoDatabase: get_connected_points()
+This function is O(P), where P is the number of connected Points. A HashMap
+maps a point to a vector of its connected points and accessing the hash map is
+an O(1) operation. Iterating over the vector and copying the GeoPoints to the
+vector that's going to be returned is O(P), making it O(P) overall.
+
+GeoDatabase: get_street_name()
+This function is O(1) because the streetname is stored in a HashMap. 
+
+Router: route()
+I used Dijkstra's algorithm to find the shortest route. The vertex with the
+shortest distance is pulled off a min heap, which means it is a log(N)
+operation, where N is the number of vertices currently in the heap. I'm not sure
+how many vertices are in the heap on average since they are added as they are
+discovered. Hash maps are used to keep track of visited vertexs and they are
+O(1) to access. In addition to pulling vertices off the heap, the vertices
+connected to the current vertex must be visited and their distance checked.
+Finding the connected vertices is O(C), with C being the number of connected
+verticies (see get_connected_points). I would guess that the time complexity is
+C*log(N), where N is the number of vertexes, and C is the average number of
+connections for each vertex.
