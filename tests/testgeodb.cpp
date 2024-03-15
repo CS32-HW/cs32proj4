@@ -24,11 +24,15 @@ void test1()
 void test2()
 {
 	vector<GeoPoint> pts1 = g.get_connected_points(GeoPoint("34.0736122", "-118.4927669"));
-	string expected1[3] = {
+	string expected1[6] = {
 		"34.0732851,-118.4931016",
+		"34.0734487,-118.4929343",
 		"34.0731714,-118.4921918",
+		"34.0733918,-118.4924793",
 		"34.0739890,-118.4931789",
+		"34.0738006,-118.4929729",
 	};
+
 	for (int i = 0; i < pts1.size(); i++)
 		assert(pts1[i].to_string() == expected1[i]);
 

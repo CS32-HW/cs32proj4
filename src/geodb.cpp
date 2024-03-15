@@ -68,9 +68,11 @@ int GeoDatabase::processRecord(std::ifstream& file)
 	geo_points.push_back(mid);
 
 	vertex_map[pt1->to_string()].push_back(pt2);
+	vertex_map[pt1->to_string()].push_back(mid);
 	vertex_map[mid->to_string()].push_back(pt1);
 	vertex_map[mid->to_string()].push_back(pt2);
 	vertex_map[pt2->to_string()].push_back(pt1);
+	vertex_map[pt2->to_string()].push_back(mid);
 
 	street_map[pt1->to_string() + ","  + pt2->to_string()] = streetName;
 	street_map[pt1->to_string() + ","  + mid->to_string()] = streetName;
